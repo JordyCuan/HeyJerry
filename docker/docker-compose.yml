@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: jerry-db
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-jerry}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - type: volume
+        source: jerry-db-volume
+        target: /var/lib/postgresql/data
+    networks:
+      jerry-network:
+        aliases:
+          - db
+
+networks:
+  jerry-network:
+    name: jerry-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 170.10.10.0/24
+
+volumes:
+  jerry-db-volume:
+    name: jerry-db-volume

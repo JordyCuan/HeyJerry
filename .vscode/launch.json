@@ -1,0 +1,106 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "app.main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000"
+            ],
+            "jinja": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Migrate",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "alembic",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "upgrade",
+                "head"
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Make Migrations",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "alembic",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "revision",
+                "--autogenerate",
+                "-m",
+                "${input:migrationMessage}",
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Show Migrations",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "alembic",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "history",
+                "--indicate-current",
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "Downgrade Migrations",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "alembic",
+            "envFile": "${workspaceFolder}/.env",
+            "args": [
+                "downgrade",
+                "${input:downgradeMigrationTarget}",
+            ],
+            "justMyCode": false
+        },
+        {
+            "name": "PyTest",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "-s",
+                "--cache-clear",
+                "--disable-warnings",
+                // ==>> Module!
+                "tests/",
+                // "tests/test_database/test_respository.py::TestBaseRepository::test_list_with_filter_manager",
+                // ==>> Coverage!
+                "--cov-report",
+                "term-missing:skip-covered",
+                "--cov=./utils/",
+            ],
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "env": {},
+        }
+    ],
+    "inputs": [
+        {
+            "id": "migrationMessage",
+            "type": "promptString",
+            "description": "Describe what this migration will do",
+            "default": "Migration description",
+        },
+        {
+            "id": "downgradeMigrationTarget",
+            "type": "promptString",
+            "description": "Downgrade to which state? (ie '0029')",
+            // "default": "",
+        },
+    ]
+}
