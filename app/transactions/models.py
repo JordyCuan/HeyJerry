@@ -9,7 +9,6 @@ from app.database import Base
 if TYPE_CHECKING:
     from app.accounts.models import Account  # noqa: F401
     from app.categories.models import Category  # noqa: F401
-    from app.tags.models import Tag  # noqa: F401
     from app.users.models import User  # noqa: F401
 
 
@@ -33,17 +32,3 @@ class Transaction(Base):
     account: Mapped["Account"] = relationship(back_populates="transactions")
     user: Mapped["User"] = relationship(back_populates="transactions")
     category: Mapped["Category"] = relationship(back_populates="transactions")
-    transaction_tags: Mapped[list["TransactionTag"]] = relationship(
-        "TransactionTag",  #
-        back_populates="transaction",
-    )
-
-
-# class TransactionTag(Base):
-#     __tablename__ = "transaction_tags"
-
-#     id: Mapped[int] = mapped_column(primary_key=True, index=True)
-#     transaction_id: Mapped[int] = mapped_column(ForeignKey("transactions.id"), nullable=False)
-#     tag_id: Mapped[int] = mapped_column(ForeignKey("tags.id"), nullable=False)
-#     transaction: Mapped["Transaction"] = relationship(back_populates="transaction_tags")
-#     tag: Mapped["Tag"] = relationship(back_populates="transaction_tags")
