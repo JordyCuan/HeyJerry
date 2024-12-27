@@ -9,21 +9,22 @@ readme = "README.md"
 
 requires-python = "~=3.12"
 dependencies = [
-    "alembic~=1.14.0",
-    "bcrypt~=4.2.1",
+    "alembic>=1.14.0",
+    "bcrypt>=4.2.1",
     "fastapi[all]>=0.115.6",
-    "passlib~=1.7.4",
+    "pydantic-settings>=2.7.0",
+    "passlib>=1.7.4",
     "psycopg2-binary~=2.9.10",
     "python-jose[cryptography]>=3.3.0",
     "pytz~=2024.2",
-    "sqlalchemy~=2.0.36",
+    "sqlalchemy>=2.0.36",
 ]
 
-[tool.pdm]
-distribution = false
+[tool.uv]
+default-groups = ["dev", "testing"]
 
-[tool.pdm.dev-dependencies]
-develop = [
+[dependency-groups]
+dev = [
     "bandit>=1.7.5",
     "black>=23.7.0",
     "flake8>=6.1.0",
@@ -33,8 +34,8 @@ develop = [
     "ruff>=0.8.3",
 ]
 testing = [
-    "pytest-cov~=4.1",
-    "pytest~=7.4",
+    "pytest-cov>=4.1",
+    "pytest>=7.4",
 ]
 
 [tool.isort]
@@ -127,9 +128,9 @@ ignore = [
     "TD003"   # Missing issue link on the line following this TODO
 ]
 unfixable = [
-    "F601",  # Dictionary key literal {name} repeated
-    "F602",  # Dictionary key {name} repeated
-    "SIM112" # Use capitalized environment variable {expected} instead of {actual}
+    "F601",   # Dictionary key literal {name} repeated
+    "F602",   # Dictionary key {name} repeated
+    "SIM112"  # Use capitalized environment variable {expected} instead of {actual}
 ]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 

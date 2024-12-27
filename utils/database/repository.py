@@ -156,12 +156,15 @@ class DestroyModelMixin(Generic[ModelType]):
         self.session.flush()
 
     def destroy_queryset(self, base_query: Query[ModelType], *, id: int) -> Query[ModelType]:
+        """Query to delete of an instance."""
         query = base_query.filter_by(id=id)
         return query
 
     def perform_destroy(self, instance: ModelType) -> None:
         """
-        Handle deletion of an instance. Override for custom delete behavior, e.g., soft deletes.
+        Explicit deletion of an instance.
+
+        Override for custom delete behavior, e.g., soft deletes.
         In case of soft-delete this method can be easily overwritten and
         set it as `instance.deleted_at = now()`
         """
