@@ -4,11 +4,11 @@ from sqlalchemy.orm import DeclarativeBase
 
 from .database.repository import FilterManagerProtocol, PaginationManagerProtocol
 
+ModelType = TypeVar("ModelType", bound=DeclarativeBase)
 RepositoryType = TypeVar("RepositoryType", bound="RepositoryProtocol")
 
 
 class RepositoryProtocol(Protocol):  # pragma: no cover
-    # TODO: Fix types using `TypeVars` rather than generic `DeclarativeBase`
     def retrieve_by_id(self, *, id: int) -> DeclarativeBase:
         pass
 
@@ -33,40 +33,39 @@ class RepositoryProtocol(Protocol):  # pragma: no cover
     def destroy(self, *, id: int) -> None:
         pass
 
-    # TODO: Fix types to avoid dumping everything into this Protocol class
     def perform_commit(self) -> None:
         pass
 
 
-class BaseService(Generic[RepositoryType]):
+class BaseService(Generic[ModelType, RepositoryType]):
     def __init__(self, *, repository: RepositoryType):
         self.repository = repository
 
-    def retrieve_by_id(self, *, id: int) -> DeclarativeBase:
-        return self.repository.retrieve_by_id(id=id)
+    def retrieve_by_id(self, *, id: int) -> ModelType:
+        return self.repository.retrieve_by_id(id=id)  # type: ignore
 
-    def get(self, **filters: Any) -> DeclarativeBase:
-        return self.repository.retrieve(**filters)
+    def get(self, **filters: Any) -> ModelType:
+        return self.repository.retrieve(**filters)  # type: ignore
 
     def list(
         self,
         filter_manager: Optional[FilterManagerProtocol] = None,
         pagination_manager: Optional[PaginationManagerProtocol] = None,
         **filters: Any,
-    ) -> list[DeclarativeBase]:
+    ) -> list[ModelType]:
         return self.repository.list(
             filter_manager=filter_manager, pagination_manager=pagination_manager, **filters
-        )
+        )  # type: ignore
 
-    def create(self, *, entity: dict[str, Any]) -> DeclarativeBase:
+    def create(self, *, entity: dict[str, Any]) -> ModelType:
         instance = self.repository.create(entity=entity)
         self.repository.perform_commit()
-        return instance  # NOTE: ~Maybe we want to return~
+        return instance  # type: ignore
 
-    def update(self, *, id: int, entity: dict[str, Any]) -> DeclarativeBase:
+    def update(self, *, id: int, entity: dict[str, Any]) -> ModelType:
         instance = self.repository.update(id=id, entity=entity)
         self.repository.perform_commit()
-        return instance
+        return instance  # type: ignore
 
     def destroy(self, *, id: int) -> None:
         self.repository.destroy(id=id)

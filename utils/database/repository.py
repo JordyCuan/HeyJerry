@@ -37,7 +37,8 @@ class ListModelMixin(Generic[ModelType]):
             pagination_manager: Object implementing `paginate_queryset` method
             **filters: Filters to refine the query results.
 
-        Returns:
+        Returns
+        -------
             List of ModelType instances.
         """
         base_query = self.get_base_query()
@@ -63,7 +64,8 @@ class RetrieveModelMixin(Generic[ModelType]):
         Args:
             id: ID of the entity to retrieve.
 
-        Returns:
+        Returns
+        -------
             Single ModelType instance.
         """
         base_query = self.get_base_query()
@@ -74,7 +76,8 @@ class RetrieveModelMixin(Generic[ModelType]):
         Args:
             **filters: Filters to refine the query results.
 
-        Returns:
+        Returns
+        -------
             Single ModelType instance.
         """
         base_query = self.get_base_query()
@@ -94,7 +97,8 @@ class CreateModelMixin(Generic[ModelType]):
         Args:
             entity: Data dictionary to create a new entity.
 
-        Returns:
+        Returns
+        -------
             Newly created ModelType instance.
         """
         model = self.get_model()
@@ -118,10 +122,12 @@ class UpdateModelMixin(Generic[ModelType]):
             id: ID of the entity to update.
             entity: Data dictionary with updated values.
 
-        Returns:
+        Returns
+        -------
             Updated ModelType instance.
 
-        Raises:
+        Raises
+        ------
             ValueError: If provided ID doesn't match entity's ID.
         """
         if id != entity.pop("id", id):
@@ -158,7 +164,7 @@ class DestroyModelMixin(Generic[ModelType]):
     def destroy_queryset(self, base_query: Query[ModelType], *, id: int) -> Query[ModelType]:
         """Query to delete of an instance."""
         query = base_query.filter_by(id=id)
-        return query
+        return query  # noqa: RET504
 
     def perform_destroy(self, instance: ModelType) -> None:
         """

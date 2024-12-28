@@ -30,7 +30,6 @@ async def login_access_token(user: User = Depends(valid_user_credentials)) -> An
     token = create_access_token(
         user.username,
         user.id,
-        # secret_key=settings.SECRET_KEY,
         expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     )
     # We need this structure. More: https://stackoverflow.com/questions/59808854/swagger-authorization-bearer-not-send

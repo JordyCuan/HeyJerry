@@ -123,6 +123,7 @@ ignore = [
     "D105",   # Missing docstring in magic method
     "D106",   # Missing docstring in public nested class
     "D107",   # Missing docstring in __init__
+    "D205",   # Blank line required between summary and description
     "RET503", # Missing explicit return at the end of function able to return non-None value
     "SIM102", # Use ternary operator {contents} instead of if-else-block
     "TD003"   # Missing issue link on the line following this TODO

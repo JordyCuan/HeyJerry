@@ -4,9 +4,7 @@ from pydantic import BaseModel
 
 
 class FastAPIRouteParameters(BaseModel):
-    """
-    Defines route parameters involved in the OpenAPI documentation for a FastAPI.
-    """
+    """Defines route parameters involved in the OpenAPI documentation for a FastAPI."""
 
     tags: Optional[List[str]] = None
     """

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any, Optional
 
 from fastapi import Depends
@@ -17,7 +17,7 @@ oauth_bearer = OAuth2PasswordBearer(tokenUrl="token")
 
 def create_access_token(username: str, user_id: int, expires_delta: Optional[timedelta] = None) -> str:
     encode: dict[str, str | int | datetime] = {"sub": username, "id": user_id}
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     expire = now + timedelta(minutes=15)
     if expires_delta:
